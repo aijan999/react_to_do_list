@@ -5,19 +5,24 @@ import TodoEdit from './TodoEdit';
 import TodoItem from './TodoItem';
 
 export default function TodoList() {
-  const [editingTodo, setEditingTodo] = useState(null);
-
-  const handleEditClick = (index) => {
-    setEditingTodo(index);
-  };
-
-  const { todoList, fetchTodos } = useContext(todoContext);
+  
+  const { todoList, fetchTodos, editId } = useContext(todoContext);
 
   useEffect(() => {
     fetchTodos();
   }, []);
 
-  console.log(todoList);
+  // console.log(todoList);
 
-  return <ul className={classes.todoList}></ul>;
+  return (
+  <ul className={classes.todoList}>
+    {todoList.map((todo) => 
+      todo.id === editId ? (
+      <TodoEdit data={todo} key={`${todo.id}-edit`} />
+      ) : (
+        <TodoItem data={todo} key={todo.id} />
+      )
+      )}
+  </ul>
+  );
 }
